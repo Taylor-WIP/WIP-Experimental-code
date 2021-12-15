@@ -131,7 +131,7 @@ class GenerateSalDataset:
         count = 0
         for batch in tqdm.tqdm(test_ds):
             if self.get_id:
-                batch = image_batch, labels_batch, ids_batch
+                image_batch, labels_batch, ids_batch = batch
                 ids_batch = tf.squeeze(ids_batch, axis=0).numpy().decode("ascii")
 
             else:
@@ -221,7 +221,7 @@ class GenerateSalDataset:
         count1 = 0
         for batch in tqdm.tqdm(train_ds):
             if self.get_id:
-                batch = image_batch, labels_batch, ids_batch
+                image_batch, labels_batch, ids_batch = batch
                 ids_batch = tf.squeeze(ids_batch, axis=0).numpy().decode("ascii")
 
             else:
