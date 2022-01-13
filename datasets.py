@@ -188,6 +188,150 @@ class ImageNetV2(TfDataset):
 ####  SECONDARY DATASETS ####
 #############################
 
+
+################## NEW - MAPS*INPUT IMAGES #############################################
+
+######### CIFAR10*MAPS ################
+########## SPLIT BY CLASS MAPS FOR MiniResNet(A) ##########
+class ByClassMultipliedMapsMiniResNetGrad(AbstractDataset):
+        @property
+        def input_shape(self):
+            return (32, 32, 3)
+
+        @property
+        def dataset_name(self):
+            return "ByClassMultipliedMaps_MiniResNet_Grad"
+
+        @property
+        def num_classes(self):
+            return 10
+
+        @property
+        def data_dir(self):
+            return "../images/cifar10/gradient/ResNets/xInput/ByClassMultipliedMaps/MiniResNet/Training"
+
+        def augmentation(self, image, label, training=False):
+            if training:
+                image = tf.image.random_flip_left_right(image)
+                # image=tf.image.random_flip_up_down(image)
+
+            return image, label
+
+        def get_and_process(self):
+            train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+                self.data_dir,
+                color_mode="rgb",
+                validation_split=0.2,
+                subset="training",
+                seed=123,
+                image_size=(self.input_shape[0], self.input_shape[1]),
+                batch_size=self.batch_size,
+            )
+
+            val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+                self.data_dir,
+                color_mode="rgb",
+                validation_split=0.2,
+                subset="validation",
+                seed=123,
+                image_size=(self.input_shape[0], self.input_shape[1]),
+                batch_size=self.batch_size,
+            )
+
+            return train_ds, val_ds
+
+class ByClassMultipliedMapsMiniResNetSG(ByClassMultipliedMapsMiniResNetGrad):
+        @property
+        def dataset_name(self):
+            return "ByClassMultipliedMaps_MiniResNet_SG"
+
+        @property
+        def data_dir(self):
+            return "../images/cifar10/smoothGrad/ResNets/xInput/ByClassMultipliedMaps/MiniResNet/Training"
+
+
+class ByClassMultipliedMapsMiniResNetIG(ByClassMultipliedMapsMiniResNetGrad):
+        @property
+        def dataset_name(self):
+            return "ByClassMultipliedMaps_MiniResNet_IG"
+
+        @property
+        def data_dir(self):
+            return "../images/cifar10/integratedGrad/ResNets/xInput/ByClassMultipliedMaps/MiniResNet/Training"
+
+
+
+######### CIFAR10*MAPS ################
+########## BINARY CLASSIFICATION BETWEEN MiniResNet(A) & MiNiResNetB MAPS*INPUT ##########
+class MultipliedMapsABGrad(AbstractDataset):
+        @property
+        def input_shape(self):
+            return (32, 32, 3)
+
+        @property
+        def dataset_name(self):
+            return "MultipliedMaps_AB_Grad"
+
+        @property
+        def num_classes(self):
+            return 2
+
+        @property
+        def data_dir(self):
+            return "../images/cifar10/gradient/ResNets/xInput/MultipliedMaps/Training"
+
+        def augmentation(self, image, label, training=False):
+            if training:
+                image = tf.image.random_flip_left_right(image)
+                # image=tf.image.random_flip_up_down(image)
+
+            return image, label
+
+        def get_and_process(self):
+            train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+                self.data_dir,
+                color_mode="rgb",
+                validation_split=0.2,
+                subset="training",
+                seed=123,
+                image_size=(self.input_shape[0], self.input_shape[1]),
+                batch_size=self.batch_size,
+            )
+
+            val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+                self.data_dir,
+                color_mode="rgb",
+                validation_split=0.2,
+                subset="validation",
+                seed=123,
+                image_size=(self.input_shape[0], self.input_shape[1]),
+                batch_size=self.batch_size,
+            )
+
+            return train_ds, val_ds
+
+class MultipliedMapsABSG(MultipliedMapsABGrad):
+        @property
+        def dataset_name(self):
+            return "MultipliedMaps_AB_SG"
+
+        @property
+        def data_dir(self):
+            return "../images/cifar10/smoothGrad/ResNets/xInput/MultipliedMaps/Training"
+
+
+class MultipliedMapsABSG(MultipliedMapsABGrad):
+        @property
+        def dataset_name(self):
+            return "MultipliedMaps_AB_IG"
+
+        @property
+        def data_dir(self):
+            return "../images/cifar10/integratedGrad/ResNets/xInput/MultipliedMaps/Training"
+
+
+
+
 ####### MAPS FROM CIFAR10  #########
 ####### BY ORIGINAL INPUT CLASS - DATA FOR 10 RESNETS ######
 class SplitClass10ResNetsCifar10Grad(AbstractDataset):
@@ -237,6 +381,7 @@ class SplitClass10ResNetsCifar10Grad(AbstractDataset):
 
         return train_ds, val_ds
 
+
 class SplitClass10ResNetsCifar10SG(SplitClass10ResNetsCifar10Grad):
     @property
     def dataset_name(self):
@@ -275,7 +420,6 @@ class SplitClass11thCifar10Grad(AbstractDataset):
     @property
     def data_dir(self):
         return "../images/cifar10/gradient/ResNets/splitClassManyResNets/EleventhResNet/Training"
-
 
     def get_and_process(self):
         test_ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -338,6 +482,130 @@ class SplitClass11thCifar10TESTIG(SplitClass11thCifar10Grad):
     @property
     def data_dir(self):
         return "../images/cifar10/integratedGrad/ResNets/splitClassManyResNets/EleventhResNet/Test_set"
+
+
+################################################################################
+####### BY ORIGINAL INPUT CLASS - DATA FOR 2 RESNETS COMBINED ######
+class SplitClass2ResNetsCifar10Grad(AbstractDataset):
+    @property
+    def input_shape(self):
+        return (32, 32, 1)
+
+    @property
+    def dataset_name(self):
+        return "SplitClass2ResNets_Cifar10_Grad"
+
+    @property
+    def num_classes(self):
+        return 10
+
+    @property
+    def data_dir(self):
+        return "../images/cifar10/gradient/ResNets/splitClassManyResNets/AB/Training"
+
+    def augmentation(self, image, label, training=False):
+        if training:
+            image = tf.image.random_flip_left_right(image)
+            # image=tf.image.random_flip_up_down(image)
+
+        return image, label
+
+    def get_and_process(self):
+        train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+            self.data_dir,
+            color_mode="grayscale",
+            validation_split=0.2,
+            subset="training",
+            seed=123,
+            image_size=(self.input_shape[0], self.input_shape[1]),
+            batch_size=self.batch_size,
+        )
+
+        val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+            self.data_dir,
+            color_mode="grayscale",
+            validation_split=0.2,
+            subset="validation",
+            seed=123,
+            image_size=(self.input_shape[0], self.input_shape[1]),
+            batch_size=self.batch_size,
+        )
+
+        return train_ds, val_ds
+
+
+class SplitClass2ResNetsCifar10SG(SplitClass10ResNetsCifar10Grad):
+    @property
+    def dataset_name(self):
+        return "SplitClass2ResNets_Cifar10_SG"
+
+    @property
+    def data_dir(self):
+        return "../images/cifar10/smoothGrad/ResNets/splitClassManyResNets/AB/Training"
+
+
+class SplitClass2ResNetsCifar10IG(SplitClass10ResNetsCifar10Grad):
+    @property
+    def dataset_name(self):
+        return "SplitClass2ResNets_Cifar10_IG"
+
+    @property
+    def data_dir(self):
+        return (
+            "../images/cifar10/integratedGrad/ResNets/splitClassManyResNets/AB/Training"
+        )
+
+
+#### SPLIT BY CLASS MINICNN(A) FOR TESTING RESNET TRAINED NETWORKS ON ####
+### TRAINING SET BUT IN TESTING FORMAT!! ###
+class SplitClassCNNACifar10Grad(AbstractDataset):
+    @property
+    def input_shape(self):
+        return (32, 32, 1)
+
+    @property
+    def num_classes(self):
+        return 10
+
+    @property
+    def dataset_name(self):
+        return "SplitClassCnnA_Cifar10_Grad"
+
+    @property
+    def data_dir(self):
+        return (
+            "../images/cifar10/gradient/MiniCNNs/splitClassManyCNNs/AB/MiniCNN/Training"
+        )
+
+    def get_and_process(self):
+        test_ds = tf.keras.preprocessing.image_dataset_from_directory(
+            self.data_dir,
+            color_mode="grayscale",
+            seed=123,
+            image_size=(self.input_shape[0], self.input_shape[1]),
+            batch_size=self.batch_size,
+        )
+        return test_ds
+
+
+class SplitClassCNNACifar10SG(SplitClassCNNACifar10Grad):
+    @property
+    def dataset_name(self):
+        return "SplitClassCnnA_Cifar10_SG"
+
+    @property
+    def data_dir(self):
+        return "../images/cifar10/smoothGrad/MiniCNNs/splitClassManyCNNs/AB/MiniCNN/Training"
+
+
+class SplitClassCNNACifar10IG(SplitClassCNNACifar10Grad):
+    @property
+    def dataset_name(self):
+        return "SplitClassCnnA_Cifar10_IG"
+
+    @property
+    def data_dir(self):
+        return "../images/cifar10/integratedGrad/MiniCNNs/splitClassManyCNNs/AB/MiniCNN/Training"
 
 
 #####################################################################
@@ -1168,6 +1436,7 @@ class LayersCNNs11c12IG(Maps5Cifar10Grad):
     def data_dir(self):
         return "../images/cifar10/integratedGrad/Training/cnns_11_12"
 
+
 ############################### NEW LAYERS EXPERIMETNS ########################
 
 ### GRAD ####
@@ -1190,6 +1459,7 @@ class LayersCNNs4c5Grad(LayersCNNs2c3):
     def data_dir(self):
         return "../images/cifar10/gradient/Training/cnns_4_5"
 
+
 class LayersCNNs5c6Grad(LayersCNNs2c3):
     @property
     def dataset_name(self):
@@ -1198,6 +1468,7 @@ class LayersCNNs5c6Grad(LayersCNNs2c3):
     @property
     def data_dir(self):
         return "../images/cifar10/gradient/Training/cnns_5_6"
+
 
 class LayersCNNs2c6Grad(LayersCNNs2c3):
     @property
@@ -1208,6 +1479,7 @@ class LayersCNNs2c6Grad(LayersCNNs2c3):
     def data_dir(self):
         return "../images/cifar10/gradient/Training/cnns_2_6"
 
+
 class LayersCNNs3c6Grad(LayersCNNs2c3):
     @property
     def dataset_name(self):
@@ -1216,7 +1488,6 @@ class LayersCNNs3c6Grad(LayersCNNs2c3):
     @property
     def data_dir(self):
         return "../images/cifar10/gradient/Training/cnns_3_6"
-
 
 
 #### SMOOTHGRAD ####
@@ -1239,6 +1510,7 @@ class LayersCNNs4c5SG(LayersCNNs2c3):
     def data_dir(self):
         return "../images/cifar10/smoothGrad/Training/cnns_4_5"
 
+
 class LayersCNNs5c6SG(LayersCNNs2c3):
     @property
     def dataset_name(self):
@@ -1247,6 +1519,7 @@ class LayersCNNs5c6SG(LayersCNNs2c3):
     @property
     def data_dir(self):
         return "../images/cifar10/smoothGrad/Training/cnns_5_6"
+
 
 class LayersCNNs2c6SG(LayersCNNs2c3):
     @property
@@ -1257,6 +1530,7 @@ class LayersCNNs2c6SG(LayersCNNs2c3):
     def data_dir(self):
         return "../images/cifar10/smoothGrad/Training/cnns_2_6"
 
+
 class LayersCNNs3c6SG(LayersCNNs2c3):
     @property
     def dataset_name(self):
@@ -1265,6 +1539,7 @@ class LayersCNNs3c6SG(LayersCNNs2c3):
     @property
     def data_dir(self):
         return "../images/cifar10/smoothGrad/Training/cnns_3_6"
+
 
 #### INTEGRATEDGRAD ####
 class LayersCNNs3c4IG(LayersCNNs2c3):
@@ -1286,6 +1561,7 @@ class LayersCNNs4c5IG(LayersCNNs2c3):
     def data_dir(self):
         return "../images/cifar10/integratedGrad/Training/cnns_4_5"
 
+
 class LayersCNNs5c6IG(LayersCNNs2c3):
     @property
     def dataset_name(self):
@@ -1294,6 +1570,7 @@ class LayersCNNs5c6IG(LayersCNNs2c3):
     @property
     def data_dir(self):
         return "../images/cifar10/integratedGrad/Training/cnns_5_6"
+
 
 class LayersCNNs2c6IG(LayersCNNs2c3):
     @property
@@ -1304,6 +1581,7 @@ class LayersCNNs2c6IG(LayersCNNs2c3):
     def data_dir(self):
         return "../images/cifar10/integratedGrad/Training/cnns_2_6"
 
+
 class LayersCNNs3c6IG(LayersCNNs2c3):
     @property
     def dataset_name(self):
@@ -1312,7 +1590,6 @@ class LayersCNNs3c6IG(LayersCNNs2c3):
     @property
     def data_dir(self):
         return "../images/cifar10/integratedGrad/Training/cnns_3_6"
-
 
 
 ##############################
