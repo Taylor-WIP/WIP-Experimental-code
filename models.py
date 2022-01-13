@@ -48,6 +48,46 @@ class ResNet152(AbstractModel):
         )
 
 
+######################################################################################################
+####### ResNet LAYERS NETWORKS ############
+
+
+class ResNet3L(AbstractModel):
+    name = "Res_3L"
+    width = 64
+    depth = 1
+
+    def res_block(self, x, num_channels, strides=1):
+        input = x
+        x = tf.keras.layers.Conv2D(
+            num_channels,
+            (3, 3),
+            strides,
+            padding="same",
+        )(input)
+        x = tf.keras.layers.BatchNormalization()(x)
+        x = tf.keras.layers.ReLU()(x)
+        x = tf.keras.layers.Conv2D(num_channels, (3, 3), padding="same")(x)
+        x = tf.keras.layers.BatchNormalization()(x)
+        if strides == 1:
+            x = tf.keras.layers.Add()([x, input])
+        return x
+
+    def build(self):
+        input = tf.keras.Input(self.input_shape)
+        x = tf.keras.layers.Conv2D(self.width, (3, 3), strides=2, padding="same")(input)
+        x = tf.keras.layers.BatchNormalization()(x)
+        x = tf.keras.layers.ReLU()(x)
+        for i in range(0, self.depth):
+            x = self.res_block(x, self.width)
+
+        x = tf.keras.layers.GlobalAveragePooling2D()(x)
+        x = tf.keras.layers.Dense(self.num_classes)(x)
+        x = tf.keras.layers.Activation("softmax")(x)
+
+        return tf.keras.Model(inputs=input, outputs=x)
+
+
 ###### CNN LAYERS NETWORKS ######
 ##################################
 
@@ -128,7 +168,39 @@ class CNN11L(CNN2L):
 
 
 class CNN12L(CNN11L):
+    # depth of previous model excluding first layer
     depth = 10
+
+    @property
+    def name(self):
+        return "CNN_{}L".format(self.depth + 2)
+
+    @property
+    def base_model_path(self):
+        return "../models/CNN_{}L_cifar10.h5".format(self.depth + 1)
+
+    def build(self):
+        # build model with depth of previous (-1 layers) model
+        base_model = super().build()
+        # Load in weights from the base trained model
+        base_model.load_weights(self.base_model_path)
+        for layer in base_model.layers[:-3]:
+            layer.trainable = False
+
+        part_model_output = base_model.layers[-4].output
+
+        x = self.block(part_model_output, self.width)
+
+        x = base_model.layers[-3](x)
+        x = base_model.layers[-2](x)
+        x = base_model.layers[-1](x)
+
+        inputs = base_model.inputs
+        return tf.keras.Model(inputs=inputs, outputs=x)
+
+
+class CNN13L(CNN11L):
+    depth = 11
 
     @property
     def name(self):
@@ -370,6 +442,45 @@ class MiniCNN(AbstractModel):
 class MiniCNNB(MiniCNN):
     name = "MiniCNNB"
 
+
+class MiniCNNC(MiniCNN):
+    name = "MiniCNNC"
+
+
+class MiniCNND(MiniCNN):
+    name = "MiniCNND"
+
+
+class MiniCNNE(MiniCNN):
+    name = "MiniCNNE"
+
+
+class MiniCNNF(MiniCNN):
+    name = "MiniCNNF"
+
+
+class MiniCNNG(MiniCNN):
+    name = "MiniCNNG"
+
+
+class MiniCNNH(MiniCNN):
+    name = "MiniCNNH"
+
+
+class MiniCNNI(MiniCNN):
+    name = "MiniCNNI"
+
+
+class MiniCNNJ(MiniCNN):
+    name = "MiniCNNJ"
+
+
+class MiniCNNK(MiniCNN):
+    name = "MiniCNNK"
+
+
+class MiniCNNX(MiniCNN):
+    name = "MiniCNNX"
 
 #### SECONDARY MODELS ######
 

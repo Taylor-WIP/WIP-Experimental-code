@@ -7,7 +7,6 @@ from tests import *
 from datasets import *
 
 
-
 ###### TRAIN PRIMARY ######
 ## trains a model, in this case MiniResNetK, which I added as an example (line 322 in models.py)
 #### on cifar10 (line 98 in datasets.py). Saves as modelname_datasetname.h5 - so in this case as MiniResNetK_cifar10.h5
@@ -64,11 +63,52 @@ from datasets import *
 #
 
 
+########### CURRENT -  VM  ############
+
+
+#
+# GenerateSalDataset(
+#     model=MiniResNet,
+#     model_path="../models/MiniResNet_cifar10.h5",
+#     dataset=Cifar10,
+#     experiment_directory="ResNets/xInput/InitialMaps",
+#     get_id=True,
+# ).generate_dataset()
+#
+#
+# GenerateSalDataset(
+#     model=MiniResNetB,
+#     model_path="../models/MiniResNetB_cifar10.h5",
+#     dataset=Cifar10,
+#     experiment_directory="ResNets/xInput/InitialMaps",
+#     get_id=True,
+# ).generate_dataset()
 
 
 
+########### CURRENT -  LOCAL  ############
+#
+
+Train(
+    MiniCNN, epochs=20, dataset=MultipliedMapsABGrad, batch_size=32
+).train()
+
+Train(
+    MiniCNN, epochs=20, dataset=MultipliedMapsABSG, batch_size=32
+).train()
+
+Train(
+    MiniCNN, epochs=20, dataset=MultipliedMapsABSG, batch_size=32
+).train()
 
 
+
+# GenerateSalDataset(
+#     model=MiniCNNC,
+#     model_path="../models/MiniCNNC_cifar10.h5",
+#     dataset=Cifar10,
+#     experiment_directory="MiniCNNs/ManyCNNs",
+# ).generate_dataset()
 
 
 ########### RECENT ############
@@ -97,8 +137,6 @@ from datasets import *
 # Train(
 #     MiniCNN, epochs=20, dataset=LayersCNNs3c6IG, batch_size=32
 # ).train()
-
-
 
 
 #
@@ -140,16 +178,7 @@ from datasets import *
 # ).evaluate()
 
 
-
-
-
-
-
-
-
 #################### OLD #################################################################
-
-
 
 
 # GenerateSalDataset(

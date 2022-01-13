@@ -13,13 +13,19 @@ import tqdm
 
 class GenerateSalDataset:
     def __init__(
-        self, model, model_path, dataset, experiment_directory="other", batch_size=1, get_id=False
+        self,
+        model,
+        model_path,
+        dataset,
+        experiment_directory="other",
+        batch_size=1,
+        get_id=False,
     ):
         self.model = model(dataset(batch_size))
         self.model_path = model_path
         self.dataset = dataset(batch_size, get_id=get_id)
         self.experiment_directory = experiment_directory
-        self.get_id=get_id
+        self.get_id = get_id
 
     def load_model(self):
         model = self.model.build()
@@ -137,7 +143,6 @@ class GenerateSalDataset:
             else:
                 image_batch, labels_batch = batch
 
-
             image_batch = tf.squeeze(image_batch, axis=0)
             labels_batch = tf.squeeze(labels_batch, axis=0)
 
@@ -229,7 +234,6 @@ class GenerateSalDataset:
 
             image_batch = tf.squeeze(image_batch, axis=0)
             labels_batch = tf.squeeze(labels_batch, axis=0)
-
 
             call_model_args = {class_idx_str: labels_batch}
             baseline = np.zeros(image_batch.shape)

@@ -27,18 +27,19 @@ import tqdm
 # for n in range(1000):
 #     labels.append(n)
 #
-# nets = ["50","101", "152"]
+# nets = ["50", "101", "152"]
 # methods = ["gradient", "smoothGrad", "integratedGrad"]
 #
 # for method in methods:
 #     for net in nets:
 #         for label in labels:
 #             new_dirrectory = "../images/imagenet_v2/splitByClass/{}/ResNet{}/{}".format(
-#             method, net, str(label))
+#                 method, net, str(label)
+#             )
 #             if not os.path.exists(new_dirrectory):
 #                 os.makedirs(new_dirrectory)
-
-
+#
+#
 # methods = ["gradient", "smoothGrad", "integratedGrad"]
 # networks = ["ResNet50", "ResNet101", "ResNet152"]
 # for method in methods:
@@ -83,7 +84,7 @@ labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 #     "MiniResNetJ",
 # ]
 
-networks = ["MiniResNetK"]
+networks = ["MiniResNetB"]
 
 methods = ["gradient", "smoothGrad", "integratedGrad"]
 
@@ -91,15 +92,15 @@ sets = ["Test_set", "Training"]
 
 # for method in methods:
 #     for set in sets:
-#         # for network in networks:
-#         for label in labels:
-#             new_dirrectory = (
-#                 "../images/cifar10/{}/ResNets/splitClassManyResNets/EleventhResNet/{}/{}".format(
-#                     method, set, str(label)
+#         for network in networks:
+#             for label in labels:
+#                 new_dirrectory = (
+#                     "../images/cifar10/{}/ResNets/xInput/ByClassMultipliedMaps/{}/{}/{}".format(
+#                         method, network, set, str(label)
+#                     )
 #                 )
-#             )
-#             if not os.path.exists(new_dirrectory):
-#                 os.makedirs(new_dirrectory)
+#                 if not os.path.exists(new_dirrectory):
+#                     os.makedirs(new_dirrectory)
 
 
 # methods = ["gradient", "smoothGrad", "integratedGrad"]
@@ -121,7 +122,7 @@ sets = ["Test_set", "Training"]
 # for method in methods:
 #     for set in sets:
 #         for network in networks:
-#             directory = "../images/cifar10/{}/ResNets/ManyResNets/{}/{}".format(
+#             directory = "../images/cifar10/{}/MiniCNNs/{}/{}".format(
 #                 method, set, network
 #             )
 #             files = os.listdir(directory)
@@ -130,19 +131,19 @@ sets = ["Test_set", "Training"]
 #                 file_name = os.path.split(file)[-1]
 #                 save_name = "{}_{}".format(network, file_name)
 #                 label = file_name[-5]
-#                 save_path = "../images/cifar10/{}/ResNets/splitClassManyResNets/TenResNets/{}/{}".format(
-#                     method, set, str(label)
+#                 save_path = "../images/cifar10/{}/MiniCNNs/splitClassManyCNNs/AB/{}/{}/{}".format(
+#                     method, network, set, str(label)
 #                 )
 #                 os.system("cp {}/{} {}/".format(directory, file_name, save_path))
 #                 os.system(
 #                     "mv {}/{} {}/{}".format(save_path, file_name, save_path, save_name)
 #                 )
-# #
+# # #
 
 for method in methods:
     for set in sets:
         for network in networks:
-            directory = "../images/cifar10/{}/ResNets/ManyResNets/EleventhResNet/{}/{}".format(
+            directory = "../images/cifar10/{}/ResNets/xInput/MultipliedMaps/{}/{}".format(
                 method, set, network
             )
             files = os.listdir(directory)
@@ -151,8 +152,8 @@ for method in methods:
                 file_name = os.path.split(file)[-1]
                 save_name = "{}_{}".format(network, file_name)
                 label = file_name[-5]
-                save_path = "../images/cifar10/{}/ResNets/splitClassManyResNets/EleventhResNet/{}/{}".format(
-                    method, set, str(label)
+                save_path = "../images/cifar10/{}/ResNets/xInput/ByClassMultipliedMaps/{}/{}/{}".format(
+                    method, network, set, str(label)
                 )
                 os.system("cp {}/{} {}/".format(directory, file_name, save_path))
                 os.system(
@@ -172,7 +173,7 @@ for method in methods:
 #
 # experiments = ["cnns_4_5", "cnns_5_6", "cnns_2_6", "cnns_3_6"]
 
-#"cnns_3_4"]
+# "cnns_3_4"]
 #
 # for method in methods:
 #     for set in sets:
@@ -185,7 +186,6 @@ for method in methods:
 #             )
 #             if not os.path.exists(new_dirrectory):
 #                 os.makedirs(new_dirrectory)
-
 
 
 # for method in methods:
@@ -207,4 +207,4 @@ for method in methods:
 #                     net_location = "../images/cifar10/{}/{}/all7_cnns/{}".format(method, set, network)
 #                 netID = network[4]
 #                 if netID == network1 or netID == network2:
-                    # os.system("cp -r {} {}/".format(net_location, new_dirrectory))
+# os.system("cp -r {} {}/".format(net_location, new_dirrectory))
